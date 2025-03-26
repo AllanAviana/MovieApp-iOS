@@ -17,7 +17,7 @@ class MoviesViewModel: ObservableObject {
         allmovies: []
     )
     
-    private let apiKey = "Key"
+    private let apiKey = "1f2fc96071583a9c50c89c207132fbd2"
     private var usedMovieIDs: Set<Int> = []
     
     private func fetchMoviesFor(genreID: Int, completion: @escaping ([Movie]) -> Void) {
@@ -81,4 +81,14 @@ class MoviesViewModel: ObservableObject {
             }
         }
     }
+    
+    func randomMovie() -> Movie? {
+        guard !genres.allmovies.isEmpty else { return nil }
+        var randomIndex = Int.random(in: 0..<genres.allmovies.count)
+        while genres.allmovies[randomIndex].overview == "" {
+            randomIndex = Int.random(in: 0..<genres.allmovies.count)
+        }
+        return genres.allmovies[randomIndex]
+    }
 }
+
