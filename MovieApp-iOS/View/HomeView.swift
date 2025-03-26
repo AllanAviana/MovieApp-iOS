@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct HomeView: View {
     @ObservedObject private var viewModel = MoviesViewModel()
     
@@ -64,7 +62,7 @@ struct GenreRowView: View {
                     ForEach(movies) { movie in
                         VStack {
                             if let url = movie.posterURL {
-                                NavigationLink(destination: {}) {
+                                NavigationLink(destination: DetailView(movie: movie)) {
                                     AsyncImage(url: url) { phase in
                                         switch phase {
                                         case .empty:
@@ -122,7 +120,7 @@ struct RandomMovieImage: View {
     var body: some View {
         VStack(alignment: .center) {
             if let url = movie.posterURL {
-                NavigationLink(destination: {}) {
+                NavigationLink(destination: DetailView(movie: movie)) {
                     AsyncImage(url: url) { phase in
                         switch phase {
                         case .empty:

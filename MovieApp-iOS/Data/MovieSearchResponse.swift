@@ -34,5 +34,12 @@ struct Movie: Codable, Identifiable {
         guard let posterPath = poster_path else { return nil }
         return URL(string: "https://image.tmdb.org/t/p/w500\(posterPath)")
     }
+    
+    // Propriedade computada que retorna a data desembrulhada ou uma string vazia
+    var formattedReleaseDate: String {
+        return release_date ?? ""
+    }
 }
+
+
 

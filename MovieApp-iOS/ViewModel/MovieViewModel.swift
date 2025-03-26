@@ -17,12 +17,15 @@ class MoviesViewModel: ObservableObject {
         allmovies: []
     )
     
+    @Published var movieDetails = MovieDetails()
+    
+    
     private let apiKey = "1f2fc96071583a9c50c89c207132fbd2"
     private var usedMovieIDs: Set<Int> = []
     
     private func fetchMoviesFor(genreID: Int, completion: @escaping ([Movie]) -> Void) {
         let baseURL = "https://api.themoviedb.org/3/discover/movie"
-        let urlString = "\(baseURL)?api_key=\(apiKey)&with_genres=\(genreID)&language=pt-BR&sort_by=popularity.desc"
+        let urlString = "\(baseURL)?api_key=\(apiKey)&with_genres=\(genreID)&language=EN&sort_by=popularity.desc"
         
         guard let url = URL(string: urlString) else {
             completion([])
@@ -89,6 +92,48 @@ class MoviesViewModel: ObservableObject {
             randomIndex = Int.random(in: 0..<genres.allmovies.count)
         }
         return genres.allmovies[randomIndex]
+    }
+    
+    func details(for movie: Movie){
+        self.movieDetails.image = movie.posterURL ?? URL(string: "") ?? URL(string: "https://example.com/default.jpg")!
+        self.movieDetails.overview = movie.overview
+        self.movieDetails.rating = movie.vote_average
+        self.movieDetails.name = movie.title
+        
+        print("Details for \(movie.title) fetched")
+    }
+    
+    func geners(ids: [Int]) -> String {
+        let generoFilmes: [Int: String] = [
+            28: "Action",
+            12: "Adventure",
+            16: "Animation",
+            35: "Comedy",
+            80: "Crime",
+            99: "Documentary",
+            18: "Drama",
+            10751: "Family",
+            14: "Fantasy",
+            36: "History",
+            27: "Horror",
+            10402: "Music",
+            9648: "Mystery",
+            10749: "Romance",
+            878: "Science Fiction",
+            10770: "TV Movie",
+            53: "Thriller",
+            10752: "War",
+            37: "Western"
+        ]
+        
+        var returnValue: [String] = []
+        
+        generoFilmes.keys.forEach { id in
+            if ids.contains(id) {
+                returnValue.append(generoFilmes[id]!)
+            }
+        }
+        return returnValue.joined(separator: ", ")
     }
 }
 
