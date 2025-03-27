@@ -25,6 +25,7 @@ class MoviesViewModel: ObservableObject {
     private var usedMovieIDs: Set<Int> = []
     
     init(){
+        loadFavorites()
         fetchAllGenres()
     }
     
@@ -144,10 +145,32 @@ class MoviesViewModel: ObservableObject {
     func favorite(movie: Movie) {
         if genres.favorite.contains(where: { $0.id == movie.id }) {
             genres.favorite.removeAll { $0.id == movie.id }
-        }else {
+        } else {
             genres.favorite.append(movie)
-            
-            print("Favoritos: ////////////////////////////////////////////////////////////////////////////////////////////\(genres.favorite)//////////////////////////////////////////////")
+        }
+        saveFavorites()
+    }
+
+    func saveFavorites() {
+        let defaults = UserDefaults.standard
+        do {
+            let data = try JSONEncoder().encode(genres.favorite)
+            defaults.set(data, forKey: "favoriteMovies")
+            print("Saved favorites to UserDefaults: \(genres.favorite.count) filmes")
+        } catch {
+            print("Erro ao codificar favoritos: \(error)")
+        }
+    }
+    func loadFavorites() {
+        let defaults = UserDefaults.standard
+        if let data = defaults.data(forKey: "favoriteMovies") {
+            do {
+                let decoded = try JSONDecoder().decode([Movie].self, from: data)
+                self.genres.favorite = decoded
+                print("Loaded favorites from UserDefaults: \(decoded.count) filmes")
+            } catch {
+                print("Erro ao decodificar favoritos: \(error)")
+            }
         }
     }
 }
