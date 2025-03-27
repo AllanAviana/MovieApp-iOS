@@ -14,7 +14,8 @@ class MoviesViewModel: ObservableObject {
         horror: [],
         action: [],
         suspense: [],
-        allmovies: []
+        allmovies: [],
+        favorite: []
     )
     
     @Published var movieDetails = MovieDetails()
@@ -22,6 +23,10 @@ class MoviesViewModel: ObservableObject {
     
     private let apiKey = "1f2fc96071583a9c50c89c207132fbd2"
     private var usedMovieIDs: Set<Int> = []
+    
+    init(){
+        fetchAllGenres()
+    }
     
     private func fetchMoviesFor(genreID: Int, completion: @escaping ([Movie]) -> Void) {
         let baseURL = "https://api.themoviedb.org/3/discover/movie"
@@ -100,7 +105,6 @@ class MoviesViewModel: ObservableObject {
         self.movieDetails.rating = movie.vote_average
         self.movieDetails.name = movie.title
         
-        print("Details for \(movie.title) fetched")
     }
     
     func geners(ids: [Int]) -> String {
@@ -128,12 +132,23 @@ class MoviesViewModel: ObservableObject {
         
         var returnValue: [String] = []
         
-        generoFilmes.keys.forEach { id in
+        for id in generoFilmes.keys.sorted() {
             if ids.contains(id) {
                 returnValue.append(generoFilmes[id]!)
             }
         }
+
         return returnValue.joined(separator: ", ")
+    }
+    
+    func favorite(movie: Movie) {
+        if genres.favorite.contains(where: { $0.id == movie.id }) {
+            genres.favorite.removeAll { $0.id == movie.id }
+        }else {
+            genres.favorite.append(movie)
+            
+            print("Favoritos: ////////////////////////////////////////////////////////////////////////////////////////////\(genres.favorite)//////////////////////////////////////////////")
+        }
     }
 }
 

@@ -13,5 +13,6 @@ struct MoviesGenre{
     var action: [Movie]
     var suspense: [Movie]
     var allmovies: [Movie]
+    var favorite: [Movie]
 }
       

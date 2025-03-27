@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct DetailView: View {
-   
+    
     let movie: Movie
     @EnvironmentObject var viewModel: MoviesViewModel
-
+    
     @Environment(\.dismiss) private var dismiss
-
+    
     var body: some View {
         VStack() {
             ZStack(alignment: .top) {
@@ -97,7 +97,7 @@ struct DetailView: View {
                     .padding(.top, 5)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
-                    
+                
                 if !movie.overview.isEmpty {
                     Text(movie.overview)
                         .font(.custom("", size: 16))
@@ -106,22 +106,47 @@ struct DetailView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }else{
                     Text("Descrição não disponível")
-                           .font(.custom("", size: 16))
-                           .foregroundStyle(.white)
-                           .padding(.top, 30)
-                           .opacity(0.5)
+                        .font(.custom("", size: 16))
+                        .foregroundStyle(.white)
+                        .padding(.top, 30)
+                        .opacity(0.5)
                 }
                 
                 
             }
             .padding(.horizontal, 25)
             .frame(maxWidth: .infinity, alignment: .leading)
-
+            
             
             Spacer()
+            
+            HStack{
+                Spacer()
+                Button(action: {
+                    viewModel.favorite(movie: movie)
+                }) {
+                    ZStack {
+                        Circle()
+                            .fill(Color.white)
+                            .frame(width: 44, height: 44)
+                        
+                        Image(systemName: "heart.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 24, height: 24)
+                            .foregroundStyle(
+                                viewModel.genres.favorite.contains(where: { $0.id == movie.id }) ? Color.red : Color.gray
+                            )
+                    }
+                }
+            }
+            .padding(20)
+            
+            
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.black)
+        .toolbar(.hidden, for: .tabBar)
         .navigationBarBackButtonHidden(true)
     }
 }
@@ -135,7 +160,7 @@ struct Return: View {
                 .frame(width: 40, height: 40)
                 .background(Color.black.opacity(0.5))
                 .clipShape(Circle())
-                
+            
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(10)

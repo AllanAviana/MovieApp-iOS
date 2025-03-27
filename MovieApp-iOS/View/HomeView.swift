@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct HomeView: View {
-    @ObservedObject private var viewModel = MoviesViewModel()
-    
+    @EnvironmentObject var viewModel: MoviesViewModel
+
     var body: some View {
         NavigationStack {
             ZStack(alignment: .top) {
@@ -37,9 +37,7 @@ struct HomeView: View {
             }
         }
         .environmentObject(viewModel)
-        .onAppear {
-            viewModel.fetchAllGenres()
-        }
+        
     }
 }
 
@@ -144,7 +142,7 @@ struct RandomMovieImage: View {
             Text(movie.title)
                 .font(.custom("", size: 14))
                 .foregroundColor(.white)
-                .padding(.horizontal, 10)
+                .padding(.horizontal, 24)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }.onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 15) {
