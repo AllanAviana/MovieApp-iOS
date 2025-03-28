@@ -9,13 +9,14 @@ import SwiftUI
 
 struct MainTabView: View {
     @State private var selectedTab = 0
+    @EnvironmentObject var viewModel: MoviesViewModel
     
     init() {
         let appearance = UITabBarAppearance()
         appearance.backgroundColor = UIColor(Color.black)
         appearance.stackedLayoutAppearance.selected.iconColor = .white
         appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.white]
-
+        
         UITabBar.appearance().standardAppearance = appearance
         if #available(iOS 15.0, *) {
             UITabBar.appearance().scrollEdgeAppearance = appearance
@@ -32,9 +33,14 @@ struct MainTabView: View {
             
             FavoriteView()
                 .tabItem {
-                    Label("Favorites", systemImage: "star")
+                    Label("Favorites", systemImage: "heart")
                 }
                 .tag(1)
+            
+            HighlightView(movies: viewModel.genres.highlight)
+                .tabItem {
+                    Label("Highlights", systemImage: "star")
+                }
         }
         .accentColor(.white)
     }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var viewModel: MoviesViewModel
-
+    
     var body: some View {
         NavigationStack {
             ZStack(alignment: .top) {
@@ -33,15 +33,11 @@ struct HomeView: View {
                 .background(Color.black)
                 
                 Logo()
-                
             }
         }
         .environmentObject(viewModel)
-        
     }
 }
-
-
 
 struct GenreRowView: View {
     let title: String
@@ -107,7 +103,6 @@ struct Logo: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color.black)
     }
-    
 }
 
 struct RandomMovieImage: View {
@@ -149,12 +144,5 @@ struct RandomMovieImage: View {
                 print("sadas das \(movie)")
             }
         }
-        
     }
 }
-
-
-#Preview {
-    HomeView()
-}
-

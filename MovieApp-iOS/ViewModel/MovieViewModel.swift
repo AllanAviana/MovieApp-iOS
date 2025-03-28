@@ -15,7 +15,8 @@ class MoviesViewModel: ObservableObject {
         action: [],
         suspense: [],
         allmovies: [],
-        favorite: []
+        favorite: [],
+        highlight: []
     )
     
     @Published var movieDetails = MovieDetails()
@@ -50,7 +51,8 @@ class MoviesViewModel: ObservableObject {
             } catch {
                 completion([])
             }
-        }.resume()
+        }
+        .resume()
     }
     
     func fetchAllGenres() {
@@ -87,6 +89,7 @@ class MoviesViewModel: ObservableObject {
                 self.genres.suspense = deduplicated
                 self.usedMovieIDs.formUnion(deduplicated.map { $0.id })
                 self.genres.allmovies.append(contentsOf: deduplicated)
+                self.highlight()
             }
         }
     }
@@ -105,7 +108,6 @@ class MoviesViewModel: ObservableObject {
         self.movieDetails.overview = movie.overview
         self.movieDetails.rating = movie.vote_average
         self.movieDetails.name = movie.title
-        
     }
     
     func geners(ids: [Int]) -> String {
@@ -138,7 +140,7 @@ class MoviesViewModel: ObservableObject {
                 returnValue.append(generoFilmes[id]!)
             }
         }
-
+        
         return returnValue.joined(separator: ", ")
     }
     
@@ -150,7 +152,7 @@ class MoviesViewModel: ObservableObject {
         }
         saveFavorites()
     }
-
+    
     func saveFavorites() {
         let defaults = UserDefaults.standard
         do {
@@ -161,6 +163,7 @@ class MoviesViewModel: ObservableObject {
             print("Erro ao codificar favoritos: \(error)")
         }
     }
+    
     func loadFavorites() {
         let defaults = UserDefaults.standard
         if let data = defaults.data(forKey: "favoriteMovies") {
@@ -172,6 +175,17 @@ class MoviesViewModel: ObservableObject {
                 print("Erro ao decodificar favoritos: \(error)")
             }
         }
+    }
+    
+    func highlight() {
+        var highlight: [Movie] = []
+        for movie in genres.allmovies{
+            if movie.vote_average >= 7.0 && movie.vote_count >= 50{
+                highlight.append(movie)
+            }
+            
+        }
+        genres.highlight = highlight.sorted { $0.vote_average < $1.vote_average }
     }
 }
 

@@ -9,9 +9,8 @@ import SwiftUI
 
 struct FavoriteView: View {
     @EnvironmentObject var viewModel: MoviesViewModel
-    @State private var refreshId = UUID() // Identificador que forçará o refresh
+    @State private var refreshId = UUID()
     
-    // Define duas colunas flexíveis
     let columns: [GridItem] = [
         GridItem(.flexible()),
         GridItem(.flexible())
@@ -69,7 +68,6 @@ struct FavoriteView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black)
-            // Força a recriação da view sempre que ela aparecer
             .id(refreshId)
             .onAppear {
                 refreshId = UUID()
@@ -77,10 +75,6 @@ struct FavoriteView: View {
         }
     }
 }
-
-
-
-
 
 extension URL {
     func appendingQueryParameter(name: String, value: String) -> URL? {

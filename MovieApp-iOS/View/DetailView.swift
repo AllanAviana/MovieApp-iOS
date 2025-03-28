@@ -97,7 +97,6 @@ struct DetailView: View {
                     .padding(.top, 5)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
-                
                 if !movie.overview.isEmpty {
                     Text(movie.overview)
                         .font(.custom("", size: 16))
@@ -111,12 +110,9 @@ struct DetailView: View {
                         .padding(.top, 30)
                         .opacity(0.5)
                 }
-                
-                
             }
             .padding(.horizontal, 25)
             .frame(maxWidth: .infinity, alignment: .leading)
-            
             
             Spacer()
             
@@ -141,8 +137,6 @@ struct DetailView: View {
                 }
             }
             .padding(20)
-            
-            
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.black)
