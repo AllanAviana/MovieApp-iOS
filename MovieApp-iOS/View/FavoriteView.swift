@@ -10,6 +10,8 @@ import SwiftUI
 struct FavoriteView: View {
     @EnvironmentObject var viewModel: MoviesViewModel
     @State private var refreshId = UUID()
+    @State private var isVisible: Bool = false
+
     
     let columns: [GridItem] = [
         GridItem(.flexible()),
@@ -60,6 +62,13 @@ struct FavoriteView: View {
                                     .frame(width: 120)
                                     .lineLimit(2)
                             }
+                            .opacity(isVisible ? 1 : 0)
+                            .scaleEffect(isVisible ? 1 : 0.5)
+                            .onAppear {
+                                isVisible = true
+                                
+                            }
+                            .animation(.easeInOut(duration: 2), value: isVisible)
                         }
                     }
                     .padding(.horizontal, 16)

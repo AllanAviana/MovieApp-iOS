@@ -19,6 +19,8 @@ class MoviesViewModel: ObservableObject {
         highlight: []
     )
     
+    @Published var isLoading: Bool = true
+    
     @Published var movieDetails = MovieDetails()
     
     
@@ -91,6 +93,10 @@ class MoviesViewModel: ObservableObject {
                 self.genres.allmovies.append(contentsOf: deduplicated)
                 self.highlight()
             }
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.isLoading = false
         }
     }
     

@@ -11,88 +11,92 @@ struct HomeView: View {
     @EnvironmentObject var viewModel: MoviesViewModel
     
     var body: some View {
-        NavigationStack {
-            ZStack(alignment: .top) {
-                ScrollView {
-                    VStack {
-                        Spacer().frame(height: 60)
-                        
-                        RandomMovieImage(ViewModel: viewModel, movie: viewModel.randomMovie() ?? Movie(id: 0, adult: false, backdrop_path: nil, genre_ids: [], original_language: "", original_title: "", overview: "", popularity: 0, poster_path: nil, release_date: nil, title: "", video: false, vote_average: 0, vote_count: 0))
-                        
-                        VStack(spacing: 24) {
-                            GenreRowView(title: "Romance",   movies: viewModel.genres.romance)
-                            GenreRowView(title: "Horror",    movies: viewModel.genres.horror)
-                            GenreRowView(title: "Ação",      movies: viewModel.genres.action)
-                            GenreRowView(title: "Suspense",  movies: viewModel.genres.suspense)
-                        }
-                        .padding(.vertical)
-                    }
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.black)
-                
-                Logo()
+        if viewModel.isLoading {
+            VStack{
+                Text("Loading...")
             }
+        }else{
+            NavigationStack {
+                ZStack(alignment: .top) {
+                    ScrollView {
+                        VStack {
+                            Spacer().frame(height: 60)
+                            
+                            RandomMovieImage(ViewModel: viewModel, movie: viewModel.randomMovie() ?? Movie(id: 0, adult: false, backdrop_path: nil, genre_ids: [], original_language: "", original_title: "", overview: "", popularity: 0, poster_path: nil, release_date: nil, title: "", video: false, vote_average: 0, vote_count: 0))
+                            
+                            VStack(spacing: 24) {
+                                GenreRowView(title: "Romance",   movies: viewModel.genres.romance)
+                                GenreRowView(title: "Horror",    movies: viewModel.genres.horror)
+                                GenreRowView(title: "Action",      movies: viewModel.genres.action)
+                                GenreRowView(title: "Suspense",  movies: viewModel.genres.suspense)
+                            }
+                            .padding(.vertical)
+                        }
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color.black)
+                    
+                    Logo()
+                }
+            }
+            .environmentObject(viewModel)
         }
-        .environmentObject(viewModel)
+        
     }
 }
 
 struct GenreRowView: View {
     let title: String
     let movies: [Movie]
+    @State private var isVisible: Bool = false
     @EnvironmentObject var viewModel: MoviesViewModel
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(title)
-                .font(.title3)
-                .foregroundColor(.white)
-                .padding(.leading, 16)
-            
-            ScrollView(.horizontal, showsIndicators: true) {
-                LazyHStack(spacing: 16) {
-                    ForEach(movies) { movie in
-                        VStack {
-                            if let url = movie.posterURL {
-                                NavigationLink(destination: DetailView(movie: movie)) {
-                                    AsyncImage(url: url) { phase in
-                                        switch phase {
-                                        case .empty:
+      
+            VStack(alignment: .leading, spacing: 8) {
+                Text(title)
+                    .font(.title3)
+                    .foregroundColor(.white)
+                    .padding(.leading, 16)
+                
+                ScrollView(.horizontal, showsIndicators: true) {
+                    LazyHStack(spacing: 16) {
+                        ForEach(movies) { movie in
+                            NavigationLink(destination: DetailView(movie: movie)) {
+                                VStack {
+                                    if let url = movie.posterURL {
+                                        AsyncImage(url: url) { image in
+                                            image.resizable().scaledToFit()
+                                        } placeholder: {
                                             ProgressView()
-                                        case .success(let image):
-                                            image
-                                                .resizable()
-                                                .scaledToFill()
-                                        case .failure:
-                                            Image(systemName: "photo")
-                                                .resizable()
-                                                .scaledToFit()
-                                                .foregroundColor(.gray)
-                                        @unknown default:
-                                            EmptyView()
                                         }
+
+                                        .frame(width: 120, height: 180)
+                                        .cornerRadius(8)
+                                        .clipped()
                                     }
-                                    .frame(width: 120, height: 180)
-                                    .cornerRadius(8)
-                                    .clipped()
+                                    
+                                    Text(movie.title)
+                                        .font(.caption)
+                                        .foregroundColor(.white)
+                                        .frame(width: 120)
+                                        .lineLimit(2)
                                 }
-                                
+                                .opacity(isVisible ? 1 : 0)
+                                .scaleEffect(isVisible ? 1 : 0.5)
+                                .onAppear {
+                                    isVisible = true
+                                }
+                                .animation(.easeInOut(duration: 2), value: isVisible)
                             }
-                            
-                            Text(movie.title)
-                                .font(.caption)
-                                .foregroundColor(.white)
-                                .frame(width: 120)
-                                .lineLimit(2)
                         }
                     }
+                    .padding(.horizontal, 16)
                 }
-                .padding(.horizontal, 16)
             }
         }
-    }
+    
 }
 
 struct Logo: View {
@@ -116,8 +120,6 @@ struct RandomMovieImage: View {
                 NavigationLink(destination: DetailView(movie: movie)) {
                     AsyncImage(url: url) { phase in
                         switch phase {
-                        case .empty:
-                            ProgressView()
                         case .success(let image):
                             image
                                 .resizable()
@@ -125,6 +127,8 @@ struct RandomMovieImage: View {
                                 .scaledToFit()
                         case .failure:
                             Image("Placeholder")
+                        case .empty:
+                            EmptyView()
                         @unknown default:
                             EmptyView()
                         }
@@ -139,10 +143,6 @@ struct RandomMovieImage: View {
                 .foregroundColor(.white)
                 .padding(.horizontal, 24)
                 .frame(maxWidth: .infinity, alignment: .leading)
-        }.onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 15) {
-                print("sadas das \(movie)")
-            }
         }
     }
 }
