@@ -46,7 +46,6 @@ class MoviesViewModel: ObservableObject {
                 completion([])
                 return
             }
-            
             do {
                 let decoded = try JSONDecoder().decode(MovieSearchResponse.self, from: data!)
                 completion(decoded.results)
@@ -95,7 +94,7 @@ class MoviesViewModel: ObservableObject {
             }
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             self.isLoading = false
         }
     }
@@ -164,9 +163,7 @@ class MoviesViewModel: ObservableObject {
         do {
             let data = try JSONEncoder().encode(genres.favorite)
             defaults.set(data, forKey: "favoriteMovies")
-            print("Saved favorites to UserDefaults: \(genres.favorite.count) filmes")
         } catch {
-            print("Erro ao codificar favoritos: \(error)")
         }
     }
     
@@ -176,9 +173,7 @@ class MoviesViewModel: ObservableObject {
             do {
                 let decoded = try JSONDecoder().decode([Movie].self, from: data)
                 self.genres.favorite = decoded
-                print("Loaded favorites from UserDefaults: \(decoded.count) filmes")
             } catch {
-                print("Erro ao decodificar favoritos: \(error)")
             }
         }
     }
@@ -189,7 +184,6 @@ class MoviesViewModel: ObservableObject {
             if movie.vote_average >= 7.0 && movie.vote_count >= 50{
                 highlight.append(movie)
             }
-            
         }
         genres.highlight = highlight.sorted { $0.vote_average < $1.vote_average }
     }

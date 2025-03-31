@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B831BC152D9AC8B1005E63C7 /* SwiftfulLoadingIndicators in Frameworks */ = {isa = PBXBuildFile; productRef = B831BC142D9AC8B1005E63C7 /* SwiftfulLoadingIndicators */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		B852F86A2D936EA700BAE981 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B831BC152D9AC8B1005E63C7 /* SwiftfulLoadingIndicators in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = "MovieApp-iOS";
 			packageProductDependencies = (
+				B831BC142D9AC8B1005E63C7 /* SwiftfulLoadingIndicators */,
 			);
 			productName = "MovieApp-iOS";
 			productReference = B852F8592D936EA600BAE981 /* MovieApp-iOS.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = B852F8502D936EA600BAE981;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				B831BC132D9AC8B1005E63C7 /* XCRemoteSwiftPackageReference "SwiftfulLoadingIndicators" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B852F85A2D936EA600BAE981 /* Products */;
 			projectDirPath = "";
@@ -552,6 +561,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B831BC132D9AC8B1005E63C7 /* XCRemoteSwiftPackageReference "SwiftfulLoadingIndicators" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftfulThinking/SwiftfulLoadingIndicators";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B831BC142D9AC8B1005E63C7 /* SwiftfulLoadingIndicators */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B831BC132D9AC8B1005E63C7 /* XCRemoteSwiftPackageReference "SwiftfulLoadingIndicators" */;
+			productName = SwiftfulLoadingIndicators;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B852F8512D936EA600BAE981 /* Project object */;
 }
