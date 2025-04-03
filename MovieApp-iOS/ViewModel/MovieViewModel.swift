@@ -21,6 +21,8 @@ class MoviesViewModel: ObservableObject {
     
     @Published var isLoading: Bool = true
     
+    @Published var isLoadingDetails: Bool = true
+    
     @Published var movieDetails = MovieDetails()
     
     
@@ -108,11 +110,11 @@ class MoviesViewModel: ObservableObject {
         return genres.allmovies[randomIndex]
     }
     
-    func details(for movie: Movie){
-        self.movieDetails.image = movie.posterURL ?? URL(string: "") ?? URL(string: "https://example.com/default.jpg")!
-        self.movieDetails.overview = movie.overview
-        self.movieDetails.rating = movie.vote_average
-        self.movieDetails.name = movie.title
+    func loading(){
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.isLoadingDetails = false
+        }
     }
     
     func geners(ids: [Int]) -> String {

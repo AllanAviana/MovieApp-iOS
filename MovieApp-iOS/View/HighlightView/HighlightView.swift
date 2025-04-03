@@ -11,13 +11,11 @@ struct HighlightView: View {
     let movies: [Movie]
     
     var body: some View {
-        NavigationStack {
-            VStack {
-                HighlightHeaderView()
-                HighlightTabView(movies: movies)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.black)
+        VStack {
+            HighlightHeaderView()
+            HighlightTabView(movies: movies)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.black)
     }
 }

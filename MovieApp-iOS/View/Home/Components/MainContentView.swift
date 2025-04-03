@@ -11,11 +11,9 @@ struct MainContentView: View {
     @EnvironmentObject var viewModel: MoviesViewModel
     
     var body: some View {
-        NavigationStack {
-            ZStack(alignment: .top) {
-                ScrollContentView()
-                Logo()
-            }
+        ZStack(alignment: .top) {
+            ScrollContentView()
+            Logo()
         }
         .environmentObject(viewModel)
     }

@@ -47,10 +47,10 @@ struct MovieDetailInfoView: View {
             
             if !movie.overview.isEmpty {
                 Text(movie.overview)
-                    .font(.custom("", size: 16))
+                    .font(.custom("", size: 22))
                     .foregroundStyle(.white)
                     .padding(.top, 30)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .frame(maxWidth: .infinity,maxHeight: .infinity ,alignment: .topLeading)
             } else {
                 Text("Descrição não disponível")
                     .font(.custom("", size: 16))

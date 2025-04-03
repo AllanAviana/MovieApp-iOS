@@ -11,20 +11,19 @@ struct FavoriteView: View {
     @EnvironmentObject var viewModel: MoviesViewModel
     @State private var refreshId = UUID()
     @State private var isVisible: Bool = false
-
+    
     var body: some View {
-        NavigationStack {
-            VStack {
-                FavoriteHeaderView()
-                FavoriteMoviesGrid(movies: viewModel.genres.favorite, isVisible: $isVisible)
-                Spacer()
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.black)
-            .id(refreshId)
-            .onAppear {
-                refreshId = UUID()
-            }
+        
+        VStack {
+            FavoriteHeaderView()
+            FavoriteMoviesGrid(movies: viewModel.genres.favorite, isVisible: $isVisible)
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.black)
+        .id(refreshId)
+        .onAppear {
+            refreshId = UUID()
         }
     }
 }

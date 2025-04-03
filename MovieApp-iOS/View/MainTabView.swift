@@ -24,23 +24,27 @@ struct MainTabView: View {
     }
     
     var body: some View {
-        TabView(selection: $selectedTab) {
-            HomeView()
-                .tabItem {
-                    Label("Home", systemImage: "house")
-                }
-                .tag(0)
-            
-            FavoriteView()
-                .tabItem {
-                    Label("Favorites", systemImage: "heart")
-                }
-                .tag(1)
-            
-            HighlightView(movies: viewModel.genres.highlight)
-                .tabItem {
-                    Label("Highlights", systemImage: "star")
-                }
+        TabView {
+            NavigationStack {
+                HomeView()
+            }
+            .tabItem {
+                Label("Home", systemImage: "house")
+            }
+
+            NavigationStack {
+                FavoriteView()
+            }
+            .tabItem {
+                Label("Favorites", systemImage: "heart")
+            }
+
+            NavigationStack {
+                HighlightView(movies: viewModel.genres.highlight)
+            }
+            .tabItem {
+                Label("Highlights", systemImage: "star")
+            }
         }
         .accentColor(.white)
     }
